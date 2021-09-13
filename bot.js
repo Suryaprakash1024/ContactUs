@@ -21,7 +21,8 @@ var hi = "hi";
 var bye = "bye";
 var start = "/start";
 var help = "/help";
-var magnet ="magnet"
+var magnet ="magnet";
+var http = "http";   
 
 if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
 bot.sendMessage(msg.chat.id,"Hello dear user");
@@ -57,7 +58,22 @@ else if (msg.text.toString().toLowerCase().includes(magnet)){
     }
 }
     
-    //if block to convert link to pdisk
+else if(msg.text.toString().toLowerCase().includes(http)){
+    
+    request(msg.text.toString(), { json: true }, (err, res, body) => 
+    {
+        // console.log(res.request.headers.referer);
+        if(res.request.headers.referer){
+            var splits = res.request.headers.referer.split('/');
+            // console.log(res.request);
+            bot.sendMessage(msg.chat.id,'https://adxplay.herokuapp.com/'+splits[3], { parse_mode: 'HTML' })
+        }
+        else{bot.sendMessage(msg.chat.id,'Sorry...')}
+
+    });
+}
+    
+//if block to convert link to pdisk
 else if(msg.text.toString().toLowerCase().includes('bruh!')){
     if(msg.entities.length === 6){
     if(msg.forward_from.username == "asulinkgenbot"){
@@ -74,7 +90,7 @@ else if(msg.text.toString().toLowerCase().includes('bruh!')){
                     {
                       if (err) { return console.log(err); }
                         var id = body.data.item_id;
-                bot.sendMessage(msg.chat.id,movieTitle+': \nhttps://pdisk.net/share-video?videoid='+id, { parse_mode: 'HTML' });
+                bot.sendMessage(msg.chat.id,movieTitle+': \nhttps://pdisk1.net/share-video?videoid='+id, { parse_mode: 'HTML' });
                       //console.log(body.explanation);
          });
         }
