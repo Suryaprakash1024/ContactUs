@@ -57,21 +57,7 @@ else if (msg.text.toString().toLowerCase().includes(magnet)){
         //bot.sendMessage(msg.chat.id, url, { parse_mode: 'HTML' });
     }
 }
-    
-else if(msg.text.toString().toLowerCase().includes(http)){
-    
-    request(msg.text.toString(), { json: true }, (err, res, body) => 
-    {
-        // console.log(res.request.headers.referer);
-        if(res.request.headers.referer){
-            var splits = res.request.headers.referer.split('/');
-            // console.log(res.request);
-            bot.sendMessage(msg.chat.id,'https://adxplay.herokuapp.com/'+splits[3], { parse_mode: 'HTML' })
-        }
-        else{bot.sendMessage(msg.chat.id,'Sorry...')}
 
-    });
-}
     
 //if block to convert link to pdisk
 else if(msg.text.toString().toLowerCase().includes('bruh!')){
@@ -90,7 +76,7 @@ else if(msg.text.toString().toLowerCase().includes('bruh!')){
                     {
                       if (err) { return console.log(err); }
                         var id = body.data.item_id;
-                bot.sendMessage(msg.chat.id,movieTitle+': \nhttps://pdisk1.net/share-video?videoid='+id, { parse_mode: 'HTML' });
+                bot.sendMessage(msg.chat.id,movieTitle+': \nhttps://adxplay.herokuapp.com/'+id, { parse_mode: 'HTML' });
                       //console.log(body.explanation);
          });
         }
@@ -102,6 +88,35 @@ else if(msg.text.toString().toLowerCase().includes('bruh!')){
     else{
         bot.sendMessage(msg.chat.id,"Boss! Forward the link boss");
     }
+    }
+        
+else if(msg.text.toString().toLowerCase().includes(http) && msg.entities.length == 1 && msg.entities[0].type =="url"){
+    
+    request(msg.text.toString(), { json: true }, (err, res, body) => 
+    {
+        // console.log(res.request.headers.referer);
+        if(res.request.headers.referer){
+            var splits = res.request.headers.referer.split('/');
+            // console.log(res.request);
+            const item_id = splits[3].split('=')[1]
+            var link = 'https://www.cofilink.com/api/ndisk-api/content/detail?item_id='+item_id;
+            console.log(link);
+            const url = encodeURI(link);
+            request({url,json:true},(error,{body}) => 
+            {
+                bot.sendMessage(msg.chat.id,body.data.title+"⬇️\n https://adxplay.herokuapp.com/"+splits[3], { parse_mode: 'HTML' });
+                console.log(body.data.title);
+            });
+        }
+        else{bot.sendMessage(msg.chat.id,'Sorry...')}
+
+    });
+}
+    else if(msg.text.toString().toLowerCase().includes(http) && msg.entities.length >= 1){
+        var Message = msg.entities;
+        Message = Message.filter(x=> x.type == 'url');
+        console.log(Message);
+        
     }
     //link to pddisk ends here 
 else{
