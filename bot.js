@@ -23,7 +23,11 @@ var start = "/start";
 var help = "/help";
 var magnet ="magnet";
 var http = "http";   
-
+if(!msg.text){
+    msg.text = msg.caption;
+    msg.entities = msg.caption_entities;
+    console.log(msg.text);
+}
 if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
 bot.sendMessage(msg.chat.id,"Hello dear user");
 } 
