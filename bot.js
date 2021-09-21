@@ -96,7 +96,7 @@ else if(msg.text.toString().toLowerCase().includes(http) && msg.entities.length 
     request(msg.text.toString(), { json: true }, (err, res, body) => 
     {
         // console.log(res.request.headers.referer);
-        if(res.request.headers.referer){
+        if(res && res.request.headers.referer){
             var splits = res.request.headers.referer.split('/');
             // console.log(res.request);
             const item_id = splits[3].split('=')[1]
@@ -114,6 +114,7 @@ else if(msg.text.toString().toLowerCase().includes(http) && msg.entities.length 
     });
 }
     else if(msg.text.toString().toLowerCase().includes(http) && msg.entities.length >= 1){
+        console.log("http conv");
         var Message = msg.entities;
         Message = Message.filter(x=> x.type == 'url');
         var links = [];
