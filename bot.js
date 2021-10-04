@@ -74,14 +74,16 @@ else if(msg.text.toString().toLowerCase().includes('bruh!')){
         var movieTitle = msg.text.substring(msg.entities[1].offset,(msg.entities[2].offset-5));
         var fileSize = msg.text.substring(msg.entities[3].offset,(msg.entities[3].offset+msg.entities[3].length));
         var link =  msg.text.substring(msg.entities[5].offset,(msg.entities[5].offset+msg.entities[5].length));
-        const url = 'https://www.cofilink.com/api/ndisk_manager/video/create?link_type=link&content_src='+link+'&source=2000&uid=51081852&title='+movieTitle+' | '+fileSize+'&description=Follow_@moviesnew24_for_more_movies';
+        const url = 'http://linkapi.net/open/create_item?api_key='+process.env.PDISK_API+'&content_src='+link+'&link_type=link&title='+movieTitle+' | '+fileSize+'&description=Follow_@moviesnew24_for_more_movies';
         const finallink = encodeURI(url);
         request(finallink, { json: true }, (err, res, body) => 
                     {
                       if (err) { return console.log(err); }
-            console.log(body);
-                        var id = 245;//body.data.item_id;
-                bot.sendMessage(msg.chat.id,movieTitle+': \nhttps://adxplay.herokuapp.com/'+id, { parse_mode: 'HTML' });
+                        console.log(body);
+                        var id = body.data.item_id;
+                if(id){                
+                    bot.sendMessage(msg.chat.id,movieTitle+': \nhttps://adxplay.herokuapp.com/share-video?videoid='+id, { parse_mode: 'HTML' });
+                }
                       //console.log(body.explanation);
          });
         }
