@@ -114,6 +114,11 @@ else if(msg.text.toString().toLowerCase().includes(http) && msg.entities.length 
                 bot.sendMessage(msg.chat.id,body.data.title+"⬇️\n https://adxplay.herokuapp.com/"+splits[3], { parse_mode: 'HTML' });
                 console.log(body.data.title);
             });
+            const cloneurl = 'http://linkapi.net/open/clone_item?api_key='+process.env.PDISK_API+'&item_id='+item_id;
+            request({cloneurl,json:true},(response) => 
+            {
+                console.log(cloneurl);
+            });
         }
         else{bot.sendMessage(msg.chat.id,'Sorry...')}
 
@@ -137,6 +142,11 @@ else if(msg.text.toString().toLowerCase().includes(http) && msg.entities.length 
                         {
                             bot.sendMessage(msg.chat.id,body.data.title+"⬇️\n https://adxplay.herokuapp.com/"+splits[3], { parse_mode: 'HTML' });
                             console.log(body.data.title);
+                            const cloneurl = 'http://linkapi.net/open/clone_item?api_key='+process.env.PDISK_API+'&item_id='+item_id;
+                            request({cloneurl,json:true},(response) => 
+                            {
+                                console.log("cloned",cloneurl);
+                            });
                         });
                     }
                 });
