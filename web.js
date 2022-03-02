@@ -7,18 +7,30 @@ const app = express();
 app.use(bodyParser.json());
 
 var TelegramBot = require('node-telegram-bot-api');
-var token = '1907182975:AAGW4p9DXySjjezs-9f4JmU80f1zJXsaXG4';
+const token = process.env.TOKEN;
 var botOptions = {
     polling: true
 };
 var bot = new TelegramBot(token, botOptions);
 app.get('/', function (req, res) {
-  res.json({ version: packageInfo.version });
-  console.log(req.query.firstname);
-  sendMessageByBot("<strong>First Name :</strong> "+ req.query.firstname + '\n'
+  // res.json({ version: packageInfo.version });
+  // console.log(req.query.firstname);
+  if(req.query.firstname || req.query.lastname || req.query.emailid || req.query.message){
+    sendMessageByBot("<strong>First Name :</strong> "+ req.query.firstname + '\n'
                   +"<strong>Last Name :</strong> "+ req.query.lastname + '\n'
                   +"<strong>Email Id :</strong> "+ req.query.emailid + '\n'
                   +"<strong>Message :</strong> "+ req.query.message);
+    res.json({status: '200',code : 'Success'});
+  }
+  else {
+    res.json({
+      firstname: 'required',
+      lastname: 'required',
+      emailid: 'required',
+      message: 'required',
+    })
+  }
+  
 });
 
 var server = app.listen(process.env.PORT, "0.0.0.0", () => {
